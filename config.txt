@@ -1,0 +1,4 @@
+arm_64bit=1
+hdmi_drive=2
+kernel=vmlinuz-rpi
+enable_uar=1
