@@ -27,6 +27,9 @@ jobs:
         with:
           platforms: |
             linux/arm64/v8
+          build-args: |
+            USER_NAME=francois
+            USER_PUBLIC_KEY=${{ secrets.SSH_PUBLIC_KEY }}
           push: true
           tags: mahoneko/alpine-pi:latest
 
