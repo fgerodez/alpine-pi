@@ -7,6 +7,7 @@ RUN apk --no-cache add \
 	linux-rpi \
 	openrc \
 	busybox-openrc \
+    mdevd-openrc \
 	openssh \
 	nftables \
 	docker \
@@ -27,6 +28,7 @@ RUN apk add --no-cache kbd-bkeymaps \
 
 RUN rc-update add loadkmap \
 	&& rc-update add syslog \
+    && rc-update add devfs \
 	&& rc-update add swclock \
 	&& rc-update add modules  \
 	&& rc-update add networking \
@@ -73,10 +75,11 @@ RUN sed -i "s/#Port 22/Port 8444/" /etc/ssh/sshd_config \
 # Setup fstab
 RUN echo "/dev/mmcblk0p1  /boot           vfat    defaults          0       2" > /etc/fstab
 RUN echo "/dev/mmcblk0p2  /               ext4    defaults,noatime  0       1" >> /etc/fstab
-RUN echo "/dev/sda1       /media/data     ext4    defaults,noatime  0       3" >> /etc/fstab
+#RUN echo "/dev/sda1       /media/data     ext4    defaults,noatime  0       3" >> /etc/fstab
 
-ADD interfaces /etc/network
-ADD config.txt /boot
+ADD config/nftables.nft /etc/
+ADD config/interfaces /etc/network
+ADD config/config.txt /boot
 
 RUN mkdir -p /var/run/openrc \
 	&& touch /var/run/openrc/shutdowntime \
