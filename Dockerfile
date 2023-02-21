@@ -47,9 +47,10 @@ RUN adduser -D -g $USER_NAME $USER_NAME \
 	&& touch /home/${USER_NAME}/.ssh/authorized_keys \
 	&& chmod 700 /home/${USER_NAME}/.ssh/authorized_keys \
 	&& echo ${USER_PUBLIC_KEY} >> /home/${USER_NAME}/.ssh/authorized_keys \
-	&& chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}/.ssh 
+	&& chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}/.ssh
+	&& echo "${USER_NAME}:*" | chpasswd -e
 
-# Allow wheel users to doas root
+# Allow wheel users to doas
 RUN echo "permit persist :wheel" >> /etc/doas.d/doas.conf
 
 # Load necessary modules
@@ -73,9 +74,9 @@ RUN sed -i "s/#Port 22/Port 8444/" /etc/ssh/sshd_config \
 	&& sed -i -e "\$aAllowUsers ${USER_NAME}" /etc/ssh/sshd_config
 
 # Setup fstab
-RUN echo "/dev/mmcblk0p1  /boot           vfat    defaults          0       2" > /etc/fstab
-RUN echo "/dev/mmcblk0p2  /               ext4    defaults,noatime  0       1" >> /etc/fstab
-#RUN echo "/dev/sda1       /media/data     ext4    defaults,noatime  0       3" >> /etc/fstab
+RUN echo "/dev/mmcblk0p1  /boot           vfat    defaults                 0       2" > /etc/fstab
+RUN echo "/dev/mmcblk0p2  /               ext4    defaults,noatime         0       1" >> /etc/fstab
+RUN echo "/dev/sda1       /media/data     ext4    defaults,noatime,nofail  0       3" >> /etc/fstab
 
 ADD config/nftables.nft /etc/
 ADD config/interfaces /etc/network
