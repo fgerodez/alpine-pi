@@ -47,7 +47,7 @@ RUN adduser -D -g $USER_NAME $USER_NAME \
 	&& touch /home/${USER_NAME}/.ssh/authorized_keys \
 	&& chmod 700 /home/${USER_NAME}/.ssh/authorized_keys \
 	&& echo ${USER_PUBLIC_KEY} >> /home/${USER_NAME}/.ssh/authorized_keys \
-	&& chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}/.ssh
+	&& chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}/.ssh \
 	&& echo "${USER_NAME}:*" | chpasswd -e
 
 # Allow wheel users to doas
