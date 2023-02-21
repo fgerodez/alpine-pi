@@ -7,6 +7,7 @@ RUN apk --no-cache add \
 	linux-rpi \
 	openrc \
 	busybox-openrc \
+	busybox-suid \
     mdevd-openrc \
 	openssh \
 	nftables \
